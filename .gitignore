@@ -1,0 +1,35 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editors / IDE
+.vscode/
+.idea/
+*.swp
+
+# Secrets
+.env
+.env.*
+
+# Local export tooling — deploy.yml never reads this folder; it's how
+# models/ gets produced on your machine, not something the deployed site
+# or the CI workflow needs. Delete-and-recreate-safe.
+scripts/
+
+# Scratch output from running the export scripts
+build/
+
+# Local preview output from the deploy workflow's assembly step
+_site/
+
+# Only the specific pruned ONNX precision files should ever be committed,
+# in case an export script gets re-run without its cleanup step.
+models/**/onnx/*.onnx
+!models/**/onnx/model_int8.onnx
+!models/**/onnx/model_fp16.onnx
+
+# Other HF export artifacts we never want (PyTorch weights, not ONNX)
+models/**/*.bin
+models/**/*.h5
+models/**/*.msgpack
+models/**/*.safetensors
