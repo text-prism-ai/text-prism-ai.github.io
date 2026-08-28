@@ -1,0 +1,76 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (pointers only)
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Create LFS manifest for cache key
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v4
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Pull LFS objects (skips download on cache hit)
+        run: git lfs pull
+
+      - name: Verify model files are real, not LFS pointers
+        run: |
+          for FILE in \
+            "models/tmr-ai-text-detector/onnx/model_int8.onnx" \
+            "models/desklib-ai-text-detector/onnx/model_fp16.onnx"; do
+            if [ ! -f "$FILE" ]; then echo "Missing $FILE"; exit 1; fi
+            SIZE=$(stat -c%s "$FILE" 2>/dev/null || stat -f%z "$FILE")
+            echo "$FILE is $SIZE bytes"
+            if [ "$SIZE" -lt 1000000 ]; then
+              echo "ERROR: $FILE looks like an unresolved LFS pointer."
+              exit 1
+            fi
+          done
+
+      - name: Assemble the site (only what should be public)
+        run: |
+          mkdir -p _site
+          cp index.html main.css index.js _site/
+          cp -r models _site/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

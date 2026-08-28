@@ -1,0 +1,75 @@
+:root {
+  --bg: #0f1115; --panel: #171a21; --panel2: #1e222b; --border: #2a2f3a;
+  --text: #e6e8ec; --muted: #9aa0ab; --accent: #5b8cff;
+  --green: #4caf6a; --amber: #e0a52e; --red: #e0524b; --radius: 10px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+header { margin-bottom: 20px; }
+h1 { font-size: 20px; margin: 0 0 4px; }
+.sub { color: var(--muted); font-size: 13px; margin: 0; }
+
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+
+.dropzone { border: 1.5px dashed var(--border); border-radius: var(--radius); padding: 28px 16px; text-align: center; cursor: pointer; transition: border-color .15s; }
+.dropzone.drag { border-color: var(--accent); }
+.dropzone p { margin: 0; }
+.dropzone input { display: none; }
+
+textarea { width: 100%; min-height: 140px; background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; font-family: inherit; font-size: 13px; resize: vertical; margin-top: 12px; }
+
+.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.row > .field { flex: 1 1 160px; }
+.settings-row { margin-top: 14px; }
+.force-row { margin-top: 10px; }
+.actions-row { margin-top: 14px; }
+
+label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+select, button { background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+button.primary { background: var(--accent); color: #fff; border: none; cursor: pointer; font-weight: 600; }
+button.primary:disabled { opacity: .5; cursor: not-allowed; }
+button.ghost, .export-row button { cursor: pointer; }
+
+.checkline { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.checkline label { margin: 0; }
+
+.status { font-size: 12px; color: var(--muted); margin-top: 10px; white-space: pre-line; }
+
+.bar-outer { height: 22px; background: var(--panel2); border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
+.bar-ai { height: 100%; width: 0%; background: linear-gradient(90deg, var(--amber), var(--red)); transition: width .3s; }
+.stat-row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
+
+.band-row { margin-top: 10px; }
+.band { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+
+.disclaimer { font-size: 12px; color: var(--muted); border-left: 3px solid var(--amber); padding: 8px 12px; background: var(--panel2); border-radius: 0 8px 8px 0; margin-top: 14px; }
+
+#resultsPanel h2 { font-size: 15px; margin: 20px 0 10px; }
+#resultsPanel h2:first-of-type { margin-top: 0; }
+
+.heat { line-height: 2; font-size: 14px; padding: 12px; background: var(--panel2); border-radius: var(--radius); border: 1px solid var(--border); white-space: pre-wrap; }
+.heat span { padding: 1px 2px; border-radius: 3px; cursor: help; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 500; }
+
+.export-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.export-row button { flex: none; }
+
+details summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+.limitations { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
+.limitations p { margin: 0 0 10px; }
+
+.hidden { display: none; }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  .wrap { max-width: 100%; padding: 0; }
+  .panel { border-color: #ccc; background: #fff; }
+  .heat, .heat span, .band { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+.model-info { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+.model-info p { margin: 0 0 4px; }

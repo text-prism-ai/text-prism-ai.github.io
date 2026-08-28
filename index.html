@@ -1,14 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Title</title>
+    <title>AI text detector — runs entirely in your browser</title>
+    <link rel="stylesheet" href="./main.css">
 </head>
 <body>
+<div class="wrap">
+    <header>
+        <h1>AI text detector</h1>
+        <p class="sub">
+            Runs 100% client-side. The model ships with this site — nothing is fetched from anywhere else, and no text
+            leaves this tab.
+            Select "Auto-detect (prefer GPU)" or "WebGPU", only if you have enabled Hardware Acceleration in your
+            browser. GPU will definitely not work otherwise.
+        </p>
+    </header>
 
-    <h1>Hello, World!</h1>
-    <p>Placeholder content.</p>
+    <div class="panel no-print" id="inputPanel">
+        <div class="dropzone" id="dropzone">
+            <p id="dzLabel">Drop a file here, or click to choose one (.txt, .md, .pdf, .docx, .rtf)</p>
+            <input type="file" id="fileInput"
+                   accept=".txt,.md,.pdf,.docx,.rtf,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            <label for="textInput"></label>
+            <textarea id="textInput" placeholder="…or paste text directly here"></textarea>
+        </div>
 
+
+        <div class="row settings-row">
+            <div class="field">
+                <label for="modelSelect">Detection model</label>
+                <select id="modelSelect"></select>
+            </div>
+            <div class="field">
+                <label for="deviceSelect">Compute device</label>
+                <select id="deviceSelect">
+                    <option value="auto">Auto-detect (prefer GPU)</option>
+                    <option value="webgpu">WebGPU</option>
+                    <option value="wasm">CPU (WASM)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="aggSelect">Aggregation</label>
+                <select id="aggSelect">
+                    <option value="token">Token-weighted mean</option>
+                    <option value="sentence">Sentence-weighted mean</option>
+                </select>
+            </div>
+        </div>
+        <div class="model-info" id="modelInfo"></div>
+
+        <div class="row force-row">
+            <div class="checkline"><input type="checkbox" id="forceShort"><label for="forceShort">Analyze short text
+                anyway (&lt; 40 words)</label></div>
+        </div>
+
+        <div class="row actions-row">
+            <button class="primary" id="analyzeBtn">Analyze text</button>
+            <button class="ghost" id="clearBtn">Clear</button>
+        </div>
+        <p class="status" id="status"></p>
+    </div>
+
+    <div class="panel hidden" id="resultsPanel">
+        <h2>Overall estimate</h2>
+        <div class="bar-outer">
+            <div class="bar-ai" id="aiBar"></div>
+        </div>
+        <div class="stat-row">
+            <span>AI likelihood: <strong id="aiPct">–</strong></span>
+            <span>Human likelihood: <strong id="humanPct">–</strong></span>
+        </div>
+        <div class="band-row">
+            <span class="band" id="bandLabel"></span>
+            <span class="sub" id="confidenceNote"></span>
+        </div>
+        <div class="disclaimer">
+            This is a statistical model estimate, not proof of authorship. See limitations below.
+        </div>
+
+        <h2>Highlighted text</h2>
+        <div class="heat" id="heatDiv"></div>
+
+        <h2>Chunk breakdown</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Text</th>
+                <th>Tokens</th>
+                <th>AI probability</th>
+                <th>Band</th>
+            </tr>
+            </thead>
+            <tbody id="chunkTableBody"></tbody>
+        </table>
+
+        <div class="export-row no-print">
+            <button id="exportJson">Export JSON</button>
+            <button id="exportCsv">Export CSV</button>
+            <button id="exportHtml">Download report (HTML)</button>
+            <button id="printReport">Print / save as PDF</button>
+        </div>
+    </div>
+
+    <details class="panel">
+        <summary>Limitations &amp; how to read this (read before trusting a result)</summary>
+        <div class="limitations">
+            <p>AI-text detection is probabilistic classification, not forensic proof of authorship. This tool cannot
+                reliably say "this exact sentence was written by ChatGPT" — it reports how closely the text's
+                statistical patterns resemble the model's AI-written training examples.</p>
+            <p><strong>False positives</strong> are more likely on: formulaic writing, academic/technical writing,
+                non-native English, heavily edited text, and very short passages.</p>
+            <p><strong>False negatives</strong> are more likely after: paraphrasing, translation, heavy human editing,
+                or rewriting by another model.</p>
+            <p>The detector (TMR / RoBERTa-base, trained on the RAID benchmark) reports strong published accuracy, but
+                was evaluated on specific domains (news, Wikipedia, reviews, recipes, Reddit, etc.) — performance on
+                unrelated domains isn't guaranteed.</p>
+            <p>The AI-likelihood bands shown are heuristic labels, not thresholds validated against your specific text
+                distribution.</p>
+            <p>Legacy binary <code>.doc</code> files aren't supported in-browser — resave as <code>.docx</code> or paste
+                the text instead.</p>
+        </div>
+    </details>
+</div>
+
+<script type="module" src="./index.js"></script>
 </body>
 </html>
