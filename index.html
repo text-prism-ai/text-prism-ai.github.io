@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI text detector — runs entirely in your browser</title>
+    <title>Text Prism AI — runs entirely in your browser</title>
     <link rel="stylesheet" href="./main.css">
 </head>
 <body>
 <div class="wrap">
     <header>
-        <h1>AI text detector</h1>
+        <h1>Text Prism AI</h1>
         <p class="sub">
             Runs 100% client-side. The model ships with this site — nothing is fetched from anywhere else, and no text
             leaves this tab.
-            Select "Auto-detect (prefer GPU)" or "WebGPU", only if you have enabled Hardware Acceleration in your
-            browser. GPU will definitely not work otherwise.
+            Select "Auto-detect (prefer GPU)" or "WebGPU", if you have enabled Hardware Acceleration in your
+            browser. GPU will likely not work otherwise.
         </p>
     </header>
 
@@ -106,7 +106,7 @@
     </div>
 
     <details class="panel">
-        <summary>Limitations &amp; how to read this (read before trusting a result)</summary>
+        <summary>Limitations &amp; how to interpret this (read before trusting a result)</summary>
         <div class="limitations">
             <p>AI-text detection is probabilistic classification, not forensic proof of authorship. This tool cannot
                 reliably say "this exact sentence was written by ChatGPT" — it reports how closely the text's
@@ -115,9 +115,12 @@
                 non-native English, heavily edited text, and very short passages.</p>
             <p><strong>False negatives</strong> are more likely after: paraphrasing, translation, heavy human editing,
                 or rewriting by another model.</p>
-            <p>The detector (TMR / RoBERTa-base, trained on the RAID benchmark) reports strong published accuracy, but
+            <p>The "fast" detector (<a href="https://huggingface.co/Oxidane/tmr-ai-text-detector">TMR</a> / RoBERTa-base, trained on the RAID benchmark) reports strong published accuracy, but
                 was evaluated on specific domains (news, Wikipedia, reviews, recipes, Reddit, etc.) — performance on
                 unrelated domains isn't guaranteed.</p>
+            <p>The "thorough" detector (based on <a href="https://huggingface.co/desklib/ai-text-detector-v1.01">desklib/ai-text-detector-v1.01</a>) might be expected to work better with academic texts.
+
+            </p>
             <p>The AI-likelihood bands shown are heuristic labels, not thresholds validated against your specific text
                 distribution.</p>
             <p>Legacy binary <code>.doc</code> files aren't supported in-browser — resave as <code>.docx</code> or paste

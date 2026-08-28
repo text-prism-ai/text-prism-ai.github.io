@@ -59,19 +59,19 @@ function estimateCapability(modelKey) {
   const conn = navigator.connection;
   if (conn && conn.downlink) {
     const seconds = (m.sizeMB * 8) / conn.downlink;
-    lines.push(`Estimated download at your current connection: ~${formatDuration(seconds)}`);
+    lines.push(`Estimated download at your current connection: ≈${formatDuration(seconds)}`);
   } else {
-    lines.push(`Estimated download: ~${formatDuration((m.sizeMB * 8) / 10)} on slow connections, ~${formatDuration((m.sizeMB * 8) / 50)} on typical broadband (exact speed not available in this browser)`);
+    lines.push(`Estimated download: ≈${formatDuration((m.sizeMB * 8) / 10)} on slow connections, ≈${formatDuration((m.sizeMB * 8) / 50)} on typical broadband (exact speed not available in this browser)`);
   }
 
   const estimatedRamNeedGB = (m.sizeMB * 2) / 1024;
   if (navigator.deviceMemory) {
-    lines.push(`Estimated memory needed: ~${estimatedRamNeedGB.toFixed(1)}GB (your device reports ~${navigator.deviceMemory}GB total)`);
+    lines.push(`Estimated memory needed: ≈${estimatedRamNeedGB.toFixed(1)}GB (your device reports ≈${navigator.deviceMemory}GB total)`);
     if (navigator.deviceMemory < estimatedRamNeedGB * 1.5) {
       lines.push(`⚠ This may be tight on your current device — the tab could slow down or be closed by the browser.`);
     }
   } else {
-    lines.push(`Estimated memory needed: ~${estimatedRamNeedGB.toFixed(1)}GB (can't detect your device's total RAM in this browser — Safari and Firefox don't expose it)`);
+    lines.push(`Estimated memory needed: ≈${estimatedRamNeedGB.toFixed(1)}GB (can't detect your device's total RAM in this browser — Safari and Firefox don't expose it)`);
   }
 
   if (navigator.gpu) {
@@ -374,7 +374,7 @@ function renderResults(fullText, results, overall, method) {
     const p = Math.round(r.aiProbability * 100);
     const bd = band(r.aiProbability);
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i + 1}</td><td>${escapeHtml(r.text.slice(0, 80))}${r.text.length > 80 ? "…" : ""}</td><td>${r.tokenCount ?? "~" + wordCount(r.text)}</td><td>${p}%</td><td>${bd.label}</td>`;
+    tr.innerHTML = `<td>${i + 1}</td><td>${escapeHtml(r.text.slice(0, 80))}${r.text.length > 80 ? "…" : ""}</td><td>${r.tokenCount ?? "≈" + wordCount(r.text)}</td><td>${p}%</td><td>${bd.label}</td>`;
     tbody.appendChild(tr);
   });
 
@@ -442,7 +442,7 @@ $("printReport").addEventListener("click", () => window.print());
 for (const [key, cfg] of Object.entries(MODELS)) {
   const opt = document.createElement("option");
   opt.value = key;
-  opt.textContent = `${cfg.label} — ~${cfg.sizeMB}MB`;
+  opt.textContent = `${cfg.label} — ≈${cfg.sizeMB}MB`;
   $("modelSelect").appendChild(opt);
 }
 
@@ -465,7 +465,7 @@ analyzeBtn.addEventListener("click", async () => {
     $("aiPct").textContent = "–"; $("humanPct").textContent = "–"; $("aiBar").style.width = "0%";
     $("bandLabel").textContent = "Insufficient text";
     $("bandLabel").style.background = "var(--muted)"; $("bandLabel").style.color = "#0f1115";
-    $("confidenceNote").textContent = `${wc} words found, ~${MIN_WORDS_FOR_RELIABLE}+ recommended. Check "analyze anyway" to run regardless.`;
+    $("confidenceNote").textContent = `${wc} words found, ≈${MIN_WORDS_FOR_RELIABLE}+ recommended. Check "analyze anyway" to run regardless.`;
     return;
   }
 
