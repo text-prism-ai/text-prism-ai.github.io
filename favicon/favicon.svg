@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description><dc:creator>RealFaviconGenerator</dc:creator><dc:source>https://realfavicongenerator.net</dc:source></rdf:Description></rdf:RDF></metadata><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1233)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(15.625,0,0,15.625,0,0)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" rx="10" fill="#fff"></rect><rect x="11" y="14" width="30" height="5" rx="2.5" fill="#111"></rect><rect x="11" y="23" width="42" height="5" rx="2.5" fill="#111"></rect><rect x="11" y="32" width="25" height="5" rx="2.5" fill="#111"></rect><circle cx="45" cy="18" r="5" fill="#2563eb"></circle><circle cx="52" cy="34" r="5" fill="#2563eb"></circle><path d="M49 19 L46 32" stroke="#2563eb" stroke-width="4" stroke-linecap="round"></path><rect x="11" y="46" width="42" height="7" rx="3.5" fill="#2563eb"></rect><text x="32" y="51.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="5.5" font-weight="700" fill="#fff">AI %</text></svg></g></g><defs><clipPath id="SvgjsClipPath1233"><rect width="1000" height="1000" x="0" y="0" rx="200" ry="200"></rect></clipPath></defs></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(15.625,0,0,15.625,0,0)" style="filter: invert(100%)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" rx="10" fill="#fff"></rect><rect x="11" y="14" width="30" height="5" rx="2.5" fill="#111"></rect><rect x="11" y="23" width="42" height="5" rx="2.5" fill="#111"></rect><rect x="11" y="32" width="25" height="5" rx="2.5" fill="#111"></rect><circle cx="45" cy="18" r="5" fill="#2563eb"></circle><circle cx="52" cy="34" r="5" fill="#2563eb"></circle><path d="M49 19 L46 32" stroke="#2563eb" stroke-width="4" stroke-linecap="round"></path><rect x="11" y="46" width="42" height="7" rx="3.5" fill="#2563eb"></rect><text x="32" y="51.5" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="5.5" font-weight="700" fill="#fff">AI %</text></svg></g></g></svg></g></svg>
