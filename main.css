@@ -275,7 +275,7 @@ details summary:focus-visible { outline: none; color: var(--text); }
   top: 24px;
 }
 .ad-skyscraper.left  { left: calc(50% - 664px); }   /* 480 (half of .wrap at 960px) + 24 (gap) + 160 */
-.ad-skyscraper.right { left: calc(50% + 504px); }   /* 480 + 24 */
+.ad-skyscraper.right { left: calc(50% + 504px); height: 300px;}   /* 480 + 24 */
 
 /* ---- Mid tier: room for ONE column only. Wrap is narrowed here so the
    right skyscraper has clearance without overlapping content. ---- */
