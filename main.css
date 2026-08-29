@@ -1,7 +1,11 @@
 :root {
   color-scheme: dark;
 
-  /* ---- Surfaces & text — oklch gives evenly-stepped lightness for a cleaner dark ramp ---- */
+  /* ---- Fonts ---- */
+  --font-header: 'Arial Black', Arial, 'Helvetica Neue', sans-serif;
+  --font-body: 'Avenir Next', Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* ---- Surfaces & text ---- */
   --bg: oklch(16% 0.015 265);
   --panel: oklch(20% 0.016 265);
   --panel2: oklch(24% 0.018 265);
@@ -9,7 +13,7 @@
   --text: oklch(93% 0.006 265);
   --muted: oklch(66% 0.02 265);
 
-  /* ---- Accent + semantic colors — softened, still contrast well on dark badges ---- */
+  /* ---- Accent + semantic colors ---- */
   --accent: oklch(70% 0.15 262);
   --accent-2: oklch(74% 0.13 300);
   --on-accent: oklch(15% 0 0);
@@ -23,12 +27,11 @@
   --shadow-1: 0 1px 2px oklch(0% 0 0 / 0.35);
   --shadow-2: 0 10px 30px oklch(0% 0 0 / 0.22);
 
-  /* ---- Motion — one shared curve/duration, killed globally under reduced-motion ---- */
+  /* ---- Motion ---- */
   --dur: 150ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Respect system light-mode preference — same tokens, zero extra requests */
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
@@ -59,7 +62,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
   background: var(--bg);
   color: var(--text);
   line-height: 1.55;
@@ -67,29 +70,45 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Thin, theme-matched scrollbars — native, no scroll libraries */
 * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
 *::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
 *::-webkit-scrollbar-track { background: transparent; }
 
+/* ---- Page-level 3-column layout: ad rails only render if there's room for
+   all three columns side by side, so they can never crowd main content ---- */
+
+
 .wrap {
   max-width: 960px;
   margin: 0 auto;
   padding: clamp(20px, 4vw, 32px) clamp(14px, 3vw, 20px) 64px;
-  container-type: inline-size; /* lets rows below respond to panel width, not just viewport */
+  container-type: inline-size;
 }
 
 header { margin-bottom: 22px; }
-h1 {
+
+/* Headers share one heavy display face; sized/positioned individually below */
+h1, details > summary {
+  font-family: var(--font-header);
+  font-weight: 900;
+}
+
+h1, h2 {
   font-size: clamp(20px, 2.4vw, 26px);
   margin: 0 0 6px;
+  letter-spacing: -0.01em;
   text-wrap: balance;
   text-align: center;
-  font-variant: all-small-caps;
-  font-weight: 700;
 }
 .sub { color: var(--muted); font-size: 13px; margin: 0; }
+
+.emphasis {
+  list-style: none;
+}
+
+.terms-note { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+.terms-note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 
 .panel {
   background: var(--panel);
@@ -100,7 +119,6 @@ h1 {
   box-shadow: var(--shadow-1), var(--shadow-2);
   transition: border-color var(--dur) var(--ease);
 }
-/* Subtle cue for which panel currently holds focus */
 .panel:has(:focus-visible) { border-color: color-mix(in oklch, var(--accent) 55%, var(--border)); }
 
 .dropzone {
@@ -139,7 +157,6 @@ textarea:focus-visible {
 .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .row > .field { flex: 1 1 160px; }
 .settings-row { margin-top: 14px; }
-/* Stable 3-up grid once the panel itself has room — independent of window width */
 @container (min-width: 520px) {
   .settings-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .settings-row > .field { flex: initial; }
@@ -159,15 +176,12 @@ select, button {
   font-family: inherit;
   transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-
 select {
   width: 100%;
-  /* Kill native OS widget chrome so our color/background actually render
-     and the box stays clickable — the root cause of the blank/dead select. */
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding-right: 32px; /* room for the custom arrow below */
+  padding-right: 32px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239aa0ab' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -221,13 +235,81 @@ th { color: var(--muted); font-weight: 500; }
 tbody tr { transition: background-color var(--dur) var(--ease); }
 tbody tr:hover { background: var(--panel2); }
 
-.export-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.export-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .export-row button { flex: none; }
 
 details summary { cursor: pointer; font-size: 13px; color: var(--muted); }
 details summary:focus-visible { outline: none; color: var(--text); }
 .limitations { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
 .limitations p { margin: 0 0 10px; }
+
+/* ---- Ad slots — flat black placeholders, swap the inner content for your
+   ad network's embed (Google AdSense <ins>, an iframe, etc). Sizes are
+   fixed, not fluid: standard IAB units break if scaled, so each one hides
+   below its own breakpoint instead of shrinking. ---- */
+/* No .page-grid needed — .wrap centers itself exactly as before */
+
+.ad-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.4;
+  border-radius: var(--radius-sm);
+}
+
+.ad-728x90 { width: 728px; height: 90px; margin: 0 auto 16px; }
+@media (max-width: 799px) { .ad-728x90 { display: none; } }
+
+.ad-300x250 { width: 300px; height: 250px; margin: 0 auto 16px; }
+@media (max-width: 339px) { .ad-300x250 { display: none; } }
+
+/* Skyscrapers: fixed to viewport, positioned relative to the centered
+   .wrap's edges via calc(). Taken fully out of flow, so they can never
+   resize or crowd main content — they only render if the math guarantees
+   clearance on both sides. */
+.ad-skyscraper {
+  display: none;
+  width: 160px;
+  height: 600px;
+  position: fixed;
+  top: 24px;
+}
+.ad-skyscraper.left  { left: calc(50% - 664px); }   /* 480 (half of .wrap at 960px) + 24 (gap) + 160 */
+.ad-skyscraper.right { left: calc(50% + 504px); }   /* 480 + 24 */
+
+/* ---- Mid tier: room for ONE column only. Wrap is narrowed here so the
+   right skyscraper has clearance without overlapping content. ---- */
+@media (min-width: 1180px) and (max-width: 1359.98px) {
+  .wrap { max-width: 760px; }
+  .ad-skyscraper.left {
+    display: flex;
+    left: calc(50% - 564px);   /* 380 (half of .wrap at 760px) + 24 (gap) */
+  }
+}
+
+/* ---- Wide tier: room for both columns at .wrap's full 960px width ---- */
+@media (min-width: 1360px) {
+  .ad-skyscraper { display: flex; }
+}
+
+#author {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.notice { text-align: center; font-weight: 900}
 
 .hidden { display: none; }
 
