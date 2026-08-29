@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://text-prism.github.io/sitemap.xml
+
+Disallow: /*.md
+Disallow: /LICENSE
+Disallow: /models
