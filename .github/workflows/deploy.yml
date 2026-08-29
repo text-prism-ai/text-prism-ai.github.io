@@ -53,7 +53,7 @@ jobs:
       - name: Assemble the site (only what should be public)
         run: |
           mkdir -p _site
-          cp index.html main.css index.js terms.html _site/
+          cp index.html main.css index.js terms.html robots.txt sitemap.xml _site/
           cp -r models images _site/
 
       - name: Setup Pages
