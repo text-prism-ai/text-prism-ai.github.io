@@ -5,21 +5,35 @@
   --font-header: 'Arial Black', Arial, 'Helvetica Neue', sans-serif;
   --font-body: 'Avenir Next', Avenir, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* ---- Surfaces & text ---- */
-  --bg: oklch(16% 0.015 265);
-  --panel: oklch(20% 0.016 265);
-  --panel2: oklch(24% 0.018 265);
-  --border: oklch(32% 0.02 265);
-  --text: oklch(93% 0.006 265);
-  --muted: oklch(66% 0.02 265);
+  /* ---- Surfaces & text: black and white ---- */
+  --bg: oklch(13% 0 0);
+  --panel: oklch(18% 0 0);
+  --panel2: oklch(23% 0 0);
+  --border: oklch(32% 0 0);
+  --text: oklch(98% 0 0);
+  --muted: oklch(72% 0 0);
 
-  /* ---- Accent + semantic colors ---- */
-  --accent: oklch(70% 0.15 262);
-  --accent-2: oklch(74% 0.13 300);
+  /* ---- Accent: yellow (accent-2 is a very close shade, so any gradient stays subtle) ---- */
+  --accent: oklch(88% 0.18 98);
+  --accent-2: oklch(83% 0.17 90);
+  --accent-text: var(--accent);   /* yellow used as text/link color */
+  --focus: var(--accent);         /* border color for hover/focus */
   --on-accent: oklch(15% 0 0);
-  --green: oklch(72% 0.13 152);
-  --amber: oklch(80% 0.14 82);
-  --red: oklch(66% 0.17 25);
+
+  /* ---- Semantic colors (kept distinct so results stay readable) ---- */
+  --green: oklch(72% 0.15 150);
+  --amber: oklch(76% 0.16 62);
+  --red: oklch(66% 0.2 25);
+
+  /* ---- Background circles ---- */
+  --c-fill: 13%;
+  --c-ring: 45%;
+  --c-line: 10%;
+  --c-soft: 6%;
+  --circle-fill: color-mix(in oklch, var(--accent) var(--c-fill), transparent);
+  --circle-ring: color-mix(in oklch, var(--accent) var(--c-ring), transparent);
+  --circle-line: color-mix(in oklch, var(--text) var(--c-line), transparent);
+  --circle-soft: color-mix(in oklch, var(--text) var(--c-soft), transparent);
 
   /* ---- Shape & elevation ---- */
   --radius: 14px;
@@ -35,23 +49,24 @@
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
-    --bg: oklch(96% 0.006 265);
+    --bg: oklch(97.5% 0 0);
     --panel: oklch(100% 0 0);
-    --panel2: oklch(97% 0.007 265);
-    --border: oklch(85% 0.01 265);
-    --text: oklch(20% 0.01 265);
-    --muted: oklch(44% 0.015 265);
-    --accent: oklch(52% 0.16 262);
-    --accent-2: oklch(56% 0.14 300);
-    --on-accent: oklch(99% 0 0);
-    --green: oklch(52% 0.13 152);
-    --amber: oklch(64% 0.15 82);
-    --red: oklch(54% 0.18 25);
+    --panel2: oklch(96% 0 0);
+    --border: oklch(86% 0 0);
+    --text: oklch(14% 0 0);
+    --muted: oklch(44% 0 0);
+    --accent-text: oklch(14% 0 0);  /* yellow text is unreadable on white */
+    --focus: oklch(14% 0 0);
+    --green: oklch(50% 0.13 150);
+    --amber: oklch(62% 0.16 62);
+    --red: oklch(54% 0.2 25);
+    --c-fill: 38%;
+    --c-ring: 90%;
+    --c-line: 9%;
+    --c-soft: 5%;
     --shadow-1: 0 1px 2px oklch(0% 0 0 / 0.06);
     --shadow-2: 0 8px 24px oklch(0% 0 0 / 0.10);
   }
-  .panel { border-color: oklch(90% 0.008 265); }
-  .dropzone { border-color: oklch(80% 0.01 265); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,6 +74,8 @@
 }
 
 * { box-sizing: border-box; }
+
+::selection { background: var(--accent); color: var(--on-accent); }
 
 body {
   margin: 0;
@@ -70,14 +87,35 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* ---- Background circles: flat shapes, fixed behind everything ---- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    /* top-right: solid disc + two rings */
+    radial-gradient(circle 240px at 100% 0%, var(--circle-fill) 238px, transparent 240px),
+    radial-gradient(circle 342px at 100% 0%, transparent 336px, var(--circle-ring) 338px, var(--circle-ring) 340px, transparent 342px),
+    radial-gradient(circle 462px at 100% 0%, transparent 457px, var(--circle-line) 459px, var(--circle-line) 460px, transparent 462px),
+    /* bottom-left: soft disc + two rings */
+    radial-gradient(circle 320px at 0% 100%, var(--circle-soft) 318px, transparent 320px),
+    radial-gradient(circle 402px at 0% 100%, transparent 396px, var(--circle-ring) 398px, var(--circle-ring) 400px, transparent 402px),
+    radial-gradient(circle 522px at 0% 100%, transparent 517px, var(--circle-line) 519px, var(--circle-line) 520px, transparent 522px),
+    /* small accents */
+    radial-gradient(circle 9px at 10% 22%, var(--accent) 8px, transparent 9px),
+    radial-gradient(circle 5px at 94% 58%, var(--text) 4px, transparent 5px),
+    radial-gradient(circle 26px at 4% 52%, transparent 22px, var(--accent) 23px, var(--accent) 25px, transparent 26px);
+}
+
 * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
 *::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
 *::-webkit-scrollbar-track { background: transparent; }
 
-/* ---- Page-level 3-column layout: ad rails only render if there's room for
+/* ---- Page-level layout: ad rails only render if there's room for
    all three columns side by side, so they can never crowd main content ---- */
-
 
 .wrap {
   max-width: 960px;
@@ -89,12 +127,29 @@ body {
 header { margin-bottom: 22px; }
 
 /* Headers share one heavy display face; sized/positioned individually below */
-h1, details > summary {
+h1, h2, details > summary {
   font-family: var(--font-header);
   font-weight: 900;
 }
 
-h1, h2 {
+h1 {
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.12;
+  margin: 0 0 8px;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  text-align: center;
+}
+h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 4px;
+  margin: 12px auto 0;
+  background: var(--accent);
+}
+
+h2 {
   font-size: clamp(20px, 2.4vw, 26px);
   margin: 0 0 6px;
   letter-spacing: -0.01em;
@@ -108,7 +163,7 @@ h1, h2 {
 }
 
 .terms-note { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
-.terms-note a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.terms-note a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 2px; }
 
 .panel {
   background: var(--panel);
@@ -119,18 +174,18 @@ h1, h2 {
   box-shadow: var(--shadow-1), var(--shadow-2);
   transition: border-color var(--dur) var(--ease);
 }
-.panel:has(:focus-visible) { border-color: color-mix(in oklch, var(--accent) 55%, var(--border)); }
+.panel:has(:focus-visible) { border-color: color-mix(in oklch, var(--focus) 60%, var(--border)); }
 
 .dropzone {
-  border: 1.5px dashed var(--border);
+  border: 1.5px dashed color-mix(in oklch, var(--accent) 55%, var(--border));
   border-radius: var(--radius);
   padding: 28px 16px;
   text-align: center;
   cursor: pointer;
   transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
-.dropzone:hover { border-color: color-mix(in oklch, var(--accent) 45%, var(--border)); background: var(--panel2); }
-.dropzone.drag { border-color: var(--accent); background: var(--panel2); }
+.dropzone:hover { border-color: var(--accent); background: var(--panel2); }
+.dropzone.drag { border-color: var(--accent); border-style: solid; background: color-mix(in oklch, var(--accent) 12%, var(--panel2)); }
 .dropzone p { margin: 0; color: var(--muted); }
 .dropzone input { display: none; }
 
@@ -150,8 +205,8 @@ textarea {
 }
 textarea:focus-visible {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 40%, transparent);
 }
 
 .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -188,22 +243,22 @@ select {
 }
 select:focus-visible, button:focus-visible {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 25%, transparent);
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 40%, transparent);
 }
 
 button { cursor: pointer; }
-button:hover { border-color: color-mix(in oklch, var(--accent) 35%, var(--border)); }
+button:hover { border-color: var(--focus); }
 button:active { transform: translateY(1px); }
 
 button.primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
   color: var(--on-accent);
   border: none;
-  font-weight: 600;
+  font-weight: 700;
 }
-button.primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
-button.primary:active { transform: translateY(0); filter: brightness(0.98); }
+button.primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+button.primary:active { transform: translateY(0); filter: brightness(0.97); }
 button.primary:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; }
 
 button.ghost, .export-row button { cursor: pointer; }
@@ -215,7 +270,7 @@ button.ghost, .export-row button { cursor: pointer; }
 .status { font-size: 12px; color: var(--muted); margin-top: 10px; white-space: pre-line; }
 
 .bar-outer { height: 22px; background: var(--panel2); border-radius: 999px; overflow: hidden; border: 1px solid var(--border); }
-.bar-ai { height: 100%; width: 0%; background: linear-gradient(90deg, var(--amber), var(--red)); transition: width .3s var(--ease); }
+.bar-ai { height: 100%; width: 0%; background: linear-gradient(90deg, var(--amber), color-mix(in oklch, var(--amber) 65%, var(--red))); transition: width .3s var(--ease); }
 .stat-row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
 
 .band-row { margin-top: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -239,6 +294,7 @@ tbody tr:hover { background: var(--panel2); }
 .export-row button { flex: none; }
 
 details summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+details summary:hover { color: var(--accent-text); }
 details summary:focus-visible { outline: none; color: var(--text); }
 .limitations { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
 .limitations p { margin: 0 0 10px; }
@@ -247,7 +303,6 @@ details summary:focus-visible { outline: none; color: var(--text); }
    ad network's embed (Google AdSense <ins>, an iframe, etc). Sizes are
    fixed, not fluid: standard IAB units break if scaled, so each one hides
    below its own breakpoint instead of shrinking. ---- */
-/* No .page-grid needed — .wrap centers itself exactly as before */
 
 .ad-slot {
   display: flex;
@@ -308,6 +363,8 @@ details summary:focus-visible { outline: none; color: var(--text); }
 @media print {
   .no-print { display: none !important; }
   body { background: #fff; color: #000; }
+  body::before { display: none; }
+  h1::after { display: none; }
   .wrap { max-width: 100%; padding: 0; }
   .panel { border-color: #ccc; background: #fff; box-shadow: none; }
   .heat, .heat span, .band { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
